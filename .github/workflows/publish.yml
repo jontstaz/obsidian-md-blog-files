@@ -19,7 +19,7 @@ jobs:
         with:
           path: temp_blog
           repository: ${{ env.BLOG_REPO }}
-          token: ${{ env.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: Install obsidian-export
         run: |
           wget https://github.com/zoni/obsidian-export/releases/download/v22.11.0/obsidian-export_Linux-x86_64.bin
