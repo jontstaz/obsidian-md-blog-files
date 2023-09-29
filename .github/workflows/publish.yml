@@ -26,7 +26,7 @@ jobs:
           chmod +x obsidian-export_Linux-x86_64.bin
       - name: Run obsidian-export
         run: |
-          mkdir ./temp_md/blogposts && mkdir temp_blog/blogposts
+          mkdir temp_blog/common_md && mkdir ./temp_md/blogposts && mkdir temp_blog/blogposts
           ./obsidian-export_Linux-x86_64.bin ./temp_md/${{ env.PUBLISH_DIR }} temp_blog/common_md
       - name: Move blog dir to currDir
         run: |
