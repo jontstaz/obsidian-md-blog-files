@@ -1,38 +1,68 @@
 name: Publish Markdown Files
+
 env:
   BLOG_REPO: jontstaz/jonte.com.au
   PUBLISH_DIR: blogposts
+
 on:
   workflow_dispatch:
   push:
     branches: [main]
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           path: temp_md
+
       - name: Checkout linked blog starter repo
         uses: actions/checkout@v3
         with:
           path: temp_blog
           repository: ${{ env.BLOG_REPO }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
       - name: Install obsidian-export
         run: |
           wget https://github.com/zoni/obsidian-export/releases/download/v22.11.0/obsidian-export_Linux-x86_64.bin
           chmod +x obsidian-export_Linux-x86_64.bin
+
       - name: Run obsidian-export
         run: |
-          mkdir temp_blog/common_md && mkdir ./temp_md/blogposts && mkdir temp_blog/blogposts
-          ./obsidian-export_Linux-x86_64.bin ./temp_md/${{ env.PUBLISH_DIR }} temp_blog/common_md
+          # Create the publish directory in the temp blog repo
+          mkdir temp_blog/${{ env.PUBLISH_DIR }}
+
+          # Export the markdown files from obsidian to the publish directory
+          ./obsidian-export_Linux-x86_64.bin ./temp_md/${{ env.PUBLISH_DIR }} temp_blog/${{ env.PUBLISH_DIR }}
+
       - name: Move blog dir to currDir
         run: |
-          cp -r temp_blog/. .
+          # Copy the publish directory from the temp blog repo to the current directory
+          cp -r temp_blog/${{ env.PUBLISH_DIR }} .
+
+          # Remove the temp blog repo
           rm -rf temp_blog
+
+          # Remove the temp markdown directory
           rm -rf temp_md
+
+      - name: Add and commit changes
+        run: |
+          # Add all changes to the staging area
+          git add .
+
+          # Commit the changes to the local repository
+          git commit -m "Publish markdown files"
+
+      - name: Push changes to remote repository
+        run: |
+          # Push the changes to the remote repository
+          git push
+
       - name: Deploy Vercel
         uses: amondnet/vercel-action@v20
         with:
