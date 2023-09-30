@@ -24,6 +24,10 @@ jobs:
         run: |
           wget https://github.com/zoni/obsidian-export/releases/download/v22.11.0/obsidian-export_Linux-x86_64.bin
           chmod +x obsidian-export_Linux-x86_64.bin
+      - name: Create necessary directories
+        run: |
+          mkdir -p temp_md/${{ env.PUBLISH_DIR }}
+          mkdir -p temp_blog/${{ env.PUBLISH_DIR }}
       - name: Run obsidian-export
         run: |
           ./obsidian-export_Linux-x86_64.bin ./temp_md/${{ env.PUBLISH_DIR }} temp_blog/${{ env.PUBLISH_DIR }}
