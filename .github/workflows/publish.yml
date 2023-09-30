@@ -26,11 +26,10 @@ jobs:
           chmod +x obsidian-export_Linux-x86_64.bin
       - name: Create necessary directories
         run: |
-          mkdir -p temp_md/${{ env.PUBLISH_DIR }}
           mkdir -p temp_blog/${{ env.PUBLISH_DIR }}
       - name: Run obsidian-export
         run: |
-          ./obsidian-export_Linux-x86_64.bin ./temp_md/${{ env.PUBLISH_DIR }} temp_blog/${{ env.PUBLISH_DIR }}
+          ./obsidian-export_Linux-x86_64.bin ./temp_md/publish temp_blog/${{ env.PUBLISH_DIR }}
       - name: Commit and push
         run: |
           cd temp_blog
