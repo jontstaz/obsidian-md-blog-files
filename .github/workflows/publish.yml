@@ -30,7 +30,8 @@ jobs:
         run: |
           wget https://github.com/zoni/obsidian-export/releases/download/v22.11.0/obsidian-export_Linux-x86_64.bin
           chmod +x obsidian-export_Linux-x86_64.bin
-
+      - name: Create temp_md/blogposts directory
+        run: mkdir -p temp_md/blogposts
       - name: Run obsidian-export
         run: |
           # Create the publish directory in the temp blog repo
